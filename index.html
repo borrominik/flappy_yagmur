@@ -4,14 +4,26 @@
     <title>Flappy Yagmur</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body {
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
             margin: 0;
+            padding: 0;
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        #gameCanvas {
+            touch-action: none;
+        }
+        /* Diğer stiller aynı */
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             background: #2c3e50;
-            touch-action: manipulation;
         }
         #gameCanvas {
             border: 2px solid #ecf0f1;
@@ -25,6 +37,16 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+		
+		// Dokunma olayı için zoom engelleyici
+        function handleTouchStart(e) {
+            e.preventDefault(); // Zoom'u engelle
+            handleInput();
+        }
+
+        // Orijinal event listener'ı değiştir
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
         
         // Ekran boyutu
         canvas.width = window.innerWidth - 20;
